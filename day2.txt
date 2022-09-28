@@ -1,0 +1,171 @@
+mysql> create database BTRSDB;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> USE BTRSDB;
+Database changed
+mysql> CREATE TABLE CUSTOMER(cid int primary key auto_increment, Cuid varchar(20), Cpw varchar(12), Csrc varchar(20), Cdest varchar(20), ticketId int );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc customer;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| cid      | int         | NO   | PRI | NULL    | auto_increment |
+| Cuid     | varchar(20) | YES  |     | NULL    |                |
+| Cpw      | varchar(12) | YES  |     | NULL    |                |
+| Csrc     | varchar(20) | YES  |     | NULL    |                |
+| Cdest    | varchar(20) | YES  |     | NULL    |                |
+| ticketId | int         | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+6 rows in set (0.01 sec)
+
+mysql> create table Admin( Aid int auto_increment, Auid varchar(20), Apw varchar(12), BusName varchar(12), BusRoute varchar(12), BusType varchar(5), SeatNo int, Dtime Time, Atime Time, BookingId int primary key auto_increment);
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> create table Admin( Aid int auto_increment, Auid varchar(20), Apw varchar(12), BusName varchar(12), BusRoute varchar(12), BusType varchar(5), SeatNo int, Dtime Time, Atime Time, BookingId int primary key );
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> create table Admin( Aid int auto_increment, Auid varchar(20), Apw varchar(12), BusName varchar(12), BusRoute varchar(12), BusType varchar(5), SeatNo int, Dtime Time, Atime Time, BookingId int);
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> create table Admin( Aid int, Auid varchar(20), Apw varchar(12), BusName varchar(12), BusRoute varchar(12), BusType varchar(5), SeatNo int, Dtime Time, Atime Time, BookingId int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc admin;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Aid       | int         | YES  |     | NULL    |       |
+| Auid      | varchar(20) | YES  |     | NULL    |       |
+| Apw       | varchar(12) | YES  |     | NULL    |       |
+| BusName   | varchar(12) | YES  |     | NULL    |       |
+| BusRoute  | varchar(12) | YES  |     | NULL    |       |
+| BusType   | varchar(5)  | YES  |     | NULL    |       |
+| SeatNo    | int         | YES  |     | NULL    |       |
+| Dtime     | time        | YES  |     | NULL    |       |
+| Atime     | time        | YES  |     | NULL    |       |
+| BookingId | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+10 rows in set (0.01 sec)
+
+mysql> create table admin_customer (cid int,aid int, foreign key(cid) references(aid));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(aid))' at line 1
+mysql> create table admin_customer (cid int,aid int, foreign key(cid) references admin (aid));
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'admin_customer_ibfk_1' in the referenced table 'admin'
+mysql> create table admin_customer (cid int,aid int, foreign key(cid) references admin.aid);
+ERROR 1239 (42000): Incorrect foreign key definition for 'foreign key without name': Key reference and table reference don't match
+mysql> create table admin_customer (cid int,aid int, foreign key(aid) references customer.aid);
+ERROR 1239 (42000): Incorrect foreign key definition for 'foreign key without name': Key reference and table reference don't match
+mysql> create table admin_customer (cid int,aid int, foreign key(aid) references customer.cid);
+ERROR 1239 (42000): Incorrect foreign key definition for 'foreign key without name': Key reference and table reference don't match
+mysql> create table admin_customer (cid int,aid int, foreign key(aid) references customer(cid));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc admin_customer;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| cid   | int  | YES  |     | NULL    |       |
+| aid   | int  | YES  | MUL | NULL    |       |
++-------+------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc customer;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| cid      | int         | NO   | PRI | NULL    | auto_increment |
+| Cuid     | varchar(20) | YES  |     | NULL    |                |
+| Cpw      | varchar(12) | YES  |     | NULL    |                |
+| Csrc     | varchar(20) | YES  |     | NULL    |                |
+| Cdest    | varchar(20) | YES  |     | NULL    |                |
+| ticketId | int         | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+6 rows in set (0.01 sec)
+
+mysql> desc admin;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Aid       | int         | YES  |     | NULL    |       |
+| Auid      | varchar(20) | YES  |     | NULL    |       |
+| Apw       | varchar(12) | YES  |     | NULL    |       |
+| BusName   | varchar(12) | YES  |     | NULL    |       |
+| BusRoute  | varchar(12) | YES  |     | NULL    |       |
+| BusType   | varchar(5)  | YES  |     | NULL    |       |
+| SeatNo    | int         | YES  |     | NULL    |       |
+| Dtime     | time        | YES  |     | NULL    |       |
+| Atime     | time        | YES  |     | NULL    |       |
+| BookingId | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+mysql> drop admin_customer;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'admin_customer' at line 1
+mysql> drop table admin_customer;
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> drop table admin;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> drop table customer;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE CUSTOMER(Cid int primary key auto_increment, Cuid varchar(20), Cpw varchar(12), Csrc varchar(20), Cdest varchar(20), BusId int );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> desc customer;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| Cid   | int         | NO   | PRI | NULL    | auto_increment |
+| Cuid  | varchar(20) | YES  |     | NULL    |                |
+| Cpw   | varchar(12) | YES  |     | NULL    |                |
+| Csrc  | varchar(20) | YES  |     | NULL    |                |
+| Cdest | varchar(20) | YES  |     | NULL    |                |
+| BusId | int         | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+6 rows in set (0.02 sec)
+
+mysql> drop table customer;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE CUSTOMER(Cid int primary key auto_increment,Cname varchar(12),Cgend varchar(7), Cuid varchar(20), Cpw varchar(12), Csrc varchar(20), Cdest varchar(20), BusId int );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc customer;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| Cid   | int         | NO   | PRI | NULL    | auto_increment |
+| Cname | varchar(12) | YES  |     | NULL    |                |
+| Cgend | varchar(7)  | YES  |     | NULL    |                |
+| Cuid  | varchar(20) | YES  |     | NULL    |                |
+| Cpw   | varchar(12) | YES  |     | NULL    |                |
+| Csrc  | varchar(20) | YES  |     | NULL    |                |
+| Cdest | varchar(20) | YES  |     | NULL    |                |
+| BusId | int         | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+8 rows in set (0.01 sec)
+
+mysql> create table Bus( BusId int, BusName varchar(12), BusRoute varchar(12), BusType varchar(5), SeatAvailForMaleP INT, SeatAvailForFeMalep int , Dtime Time, Atime Time);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc bus;
++---------------------+-------------+------+-----+---------+-------+
+| Field               | Type        | Null | Key | Default | Extra |
++---------------------+-------------+------+-----+---------+-------+
+| BusId               | int         | YES  |     | NULL    |       |
+| BusName             | varchar(12) | YES  |     | NULL    |       |
+| BusRoute            | varchar(12) | YES  |     | NULL    |       |
+| BusType             | varchar(5)  | YES  |     | NULL    |       |
+| SeatAvailForMaleP   | int         | YES  |     | NULL    |       |
+| SeatAvailForFeMalep | int         | YES  |     | NULL    |       |
+| Dtime               | time        | YES  |     | NULL    |       |
+| Atime               | time        | YES  |     | NULL    |       |
++---------------------+-------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> create table admin( Aname varchar(12),AuserId varchar(20), Apw varchar(12),
+
+
+
+
+
